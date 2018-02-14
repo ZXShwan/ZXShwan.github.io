@@ -407,78 +407,14 @@
 
       
         
-          
-            <h1 id="写在前面的废话"><a href="#写在前面的废话" class="headerlink" title="写在前面的废话"></a>写在前面的废话</h1><p>很久以前就看到过许多漂亮的博客，尤其是在遇到技术问题百度一下的时候，总会点到一些技术大牛的个人博客里，看他们的解决方法和一些私人日志（偷笑）。每次看到漂亮的博客都觉的好羡慕，想着将来自己也搞这么个东西玩玩，于是就有了这个学来的“教程”。</p>
-<p>了解 Hexo 和 GitHub 的朋友们，估计这篇小短文对你们也没什么帮助了，可以不用浪费时间啦~而对于普通小白，想要免费搭建一个可以让任何人都可以访问到的自己专属博客，可以继续往下看~</p>
-<p><strong>PS: 本教程以Mac OS作为参考，不同系统（Windows, Linux）具体安装工具方式可能不同，建议参考相关官网进行安装配置。</strong></p>
-<h1 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h1><h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a> （<a href="https://github.com/hexojs/hexo" target="_blank" rel="noopener">GitHub地址</a>）是一个基于 <a href="http://nodejs.cn/" target="_blank" rel="noopener">Node.js</a> 的静态博客程序，可以方便的生成静态网页托管在 <a href="https://github.com/" target="_blank" rel="noopener">Github</a> 和 <a href="https://www.heroku.com/" target="_blank" rel="noopener">Heroku</a>上。作者是来自台湾的<a href="https://github.com/hexojs/hexo" target="_blank" rel="noopener">@tommy351</a>。官方介绍：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A fast, simple &amp; powerful blog framework, powered by Node.js.</span><br><span class="line">基于 Node.js 的快速、简洁但功能强大的博客框架。</span><br></pre></td></tr></table></figure></p>
-<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2><p>使用 Hexo 需要依赖于 Node.js，在此做简单介绍，引用百度百科内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Node.js 是一个基于Chrome JavaScript 运行时建立的一个平台，用来方便地搭建快速的易于扩展的网络应用.</span><br><span class="line">Node.js 借助事件驱动，非阻塞 I/O 模型变得轻量和高效， 非常适合运行在分布式设备的数据密集型的实时应用.</span><br><span class="line">Node.js 对 Google V8 引擎(应用于 Google Chrome 浏览器)进行了封装.</span><br></pre></td></tr></table></figure></p>
-<h2 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h2><p>我们用 Hexo 搭建好的博客要将网站托管在 Github 上，在此也简单介绍下。引自百度百科：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gitHub是一个面向开源及私有软件项目的托管平台，因为只支持git 作为唯一的版本库格式进行托管，故名gitHub。</span><br><span class="line">gitHub于2008年4月10日正式上线，除了git代码仓库托管及基本的 Web管理界面以外，还提供了订阅、讨论组、文本渲染、在线文件编辑器、协作图谱（报表）、代码片段分享（Gist）等功能。</span><br><span class="line">目前，其注册用户已经超过350万，托管版本数量也是非常之多，其中不乏知名开源项目 Ruby on Rails、jQuery、python 等。</span><br></pre></td></tr></table></figure></p>
-<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="安装-Node-js"><a href="#安装-Node-js" class="headerlink" title="安装 Node.js"></a>安装 Node.js</h2><p>Node.js 可以从<a href="http://nodejs.cn/" target="_blank" rel="noopener">官网</a>根据不同系统下载安装。这里 Mac OS 推荐使用 <a href="https://docs.brew.sh/" target="_blank" rel="noopener">Homebrew</a>进行安装，省去了配置环境等麻烦，也易于卸载。直接在终端输入命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</span><br></pre></td></tr></table></figure></p>
-<p>安装 node.js，在终端输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brew install node</span><br></pre></td></tr></table></figure></p>
-<p>此时可能需要输入电脑密码，输入完成后等待安装完成。再输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure></p>
-<p>如果可以看到版本号，说明安装成功。</p>
-<h2 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h2><p>安装 Hexo 极其简单，官网也只有一条命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure></p>
-<p>等待安装完成，输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo --versio</span><br></pre></td></tr></table></figure></p>
-<p>看到版本号说明安装成功。</p>
-<h2 id="安装-git"><a href="#安装-git" class="headerlink" title="安装 git"></a>安装 git</h2><p>同样的，git 也可以从<a href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" target="_blank" rel="noopener">官网</a>下载安装，或者用 homebrew<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install git</span><br></pre></td></tr></table></figure></p>
-<p>直接安装。（不过 Mac OS 好像是自带git的吧，或者只要安装了 xcode，git 就会自动安装）<br>测试安装是否成功，在终端输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
-<p>看到版本号说明安装成功。</p>
-<h1 id="搭建博客"><a href="#搭建博客" class="headerlink" title="搭建博客"></a>搭建博客</h1><p>准备工作完成，终于可以开始搭建我们自己的博客了。其实跟着<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo官网</a>的教程很快就可以自己搞定，但是如果懒得去可以继续往下看。</p>
-<p><strong>注意：以下所有的操作都在终端进行</strong></p>
-<ul>
-<li>选择路径</li>
-</ul>
-<p>用 “cd” 命令进入想要建立博客的路径（文件夹）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd 文件夹名称</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>初始化博客</li>
-</ul>
-<p>比如我们建立的博客名字叫 blog，则终端输入命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init blog</span><br></pre></td></tr></table></figure></p>
-<p>切换到刚刚的 blog 目录下，安装所有的依赖包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd blog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure></p>
-<p>到此，博客就算成功建立起来了，我们已经可以启动博客看看效果了。</p>
-<ul>
-<li>启动博客</li>
-</ul>
-<p>运行以下命令进行清理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure></p>
-<p>运行以下命令生成所需要的静态页面及文件（g 即 generate）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></p>
-<p>运行以下命令启动服务器（s 即 server）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></p>
-<p>然后打开浏览器，输入地址 <strong><a href="localhost:4000" target="_blank" rel="noopener">localhost:4000</a></strong> 即可看到效果</p>
-<ul>
-<li>发表文章</li>
-</ul>
-<p>比如我们想发表一篇名为“我的第一篇博客”的文章，在终端输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new 我的第一篇博客</span><br></pre></td></tr></table></figure></p>
-<p>运行之后可以在 source/_posts 目录下生成“我的第一篇博客.md”文件，进入便可用 <a href="http://www.markdown.cn/" target="_blank" rel="noopener">MarkDown</a> 语言编写博客。</p>
-<p>再利用上面三个命令重新生成下，看看效果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>配置博客</li>
-</ul>
-<p>网站的设置大部分都在 <strong>_config.yml</strong> 文件中，详细配置可以查看<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">官方文档</a>，下面列出一些简单的常用配置：</p>
-<p><strong>title</strong> -&gt; 网站标题<br><strong>subtitle</strong> -&gt; 网站副标题<br><strong>description</strong> -&gt; 网站描述<br><strong>author</strong> -&gt; 作者名字<br><strong>language</strong> -&gt; 网站使用的语言<br><strong>theme</strong> -&gt; 网站主题</p>
-<p><strong>注意：进行配置时，要在冒号后面加一个英文空格！</strong></p>
-<ul>
-<li>关于主题和其他配置</li>
-</ul>
-<p>同样的，许多好看的主题都在<a href="https://hexo.io/themes/" target="_blank" rel="noopener">官网</a>查看。推荐 nexT 主题，可以在 blog 路径下，输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p>
-<p>下载好之后，只需要在 _config.yml 配置文件中 <strong>theme</strong> 设置。再次利用上面的三个命令查看效果：<br>再利用上面三个命令重新生成下，看看效果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure></p>
-<p><strong>注：要让网站的配置文件的修改生效就必须利用 “hexo g”重新生成响应文件，而主题文件夹下的配置文件（“/theme/主题名称/_config.yml”）的修改只需要刷新网页即可看到效果</strong></p>
-<h1 id="部署博客至GitHub"><a href="#部署博客至GitHub" class="headerlink" title="部署博客至GitHub"></a>部署博客至GitHub</h1><h2 id="在-GitHub-中建立自己的-public-库"><a href="#在-GitHub-中建立自己的-public-库" class="headerlink" title="在 GitHub 中建立自己的 public 库"></a>在 GitHub 中建立自己的 public 库</h2><p>首先去 <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a> 注册自己的账号，然后登录，创建 New repository，如果你的账户名称是 ZhangSan，则需要创建一个名称为 “ZhangSan.github.io”的 <strong>public</strong> 库。此时我们需要给自己的电脑生成一个 ssh key 来连接 GitHub。在终端输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">git config --global user.name yourname</span><br><span class="line">git config --global user.email yourmail@gmail.com</span><br><span class="line">ssh-keygen -t rsa -C yourmail@gmail.com</span><br></pre></td></tr></table></figure></p>
-<p>连续按三次回车，设置密码为空。<br>输入以下命令，复制里面的所有内容，再按 “Esc -&gt; :q” 回车，退出编辑界面。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .ssh/id_rsa.pub</span><br></pre></td></tr></table></figure></p>
-<p>在 GitHub 上点击右上角自己的头像 <strong><em>-&gt; Settings —&gt; SSH nd GPG keys —&gt; New SSH key</em></strong>，把刚刚复制的内容粘贴到 key 中，随便起个名字填入 <strong>title</strong> 并点击 <strong>Add SSH Key</strong>。</p>
-<h2 id="开始部署"><a href="#开始部署" class="headerlink" title="开始部署"></a>开始部署</h2><p>首先安装 <a href="https://github.com/hexojs/hexo-deployer-git" target="_blank" rel="noopener">hexo-deployer-git</a>。在终端利用“cd”命令进入刚刚建立好的 blog 路径下，输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p>
-<p>然后打开 blog 文件夹下的 _config.yml 文件配置 deploy：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: github    ------&gt; 直接填写 github</span><br><span class="line">  repository: https://github.com/rakkang/rakkang.github.io.git   -----&gt; Github 的仓库地址</span><br><span class="line">  brach: master</span><br></pre></td></tr></table></figure></p>
-<p>保存退出，在终端输入（d 即 deploy）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p>
-<p>至此，成功之后便可以通过访问 <strong>“username.github.io”</strong> 来查看你的博客啦！</p>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p>本“教程”仅为博客搭建入门教程，也只是记录下自己第一次搭建博客的过程，大家可以根据自己的需求做进一步改进，如更换主题、删除文章等，详情参考<a href="https://hexo.io/docs/" target="_blank" rel="noopener">官方文档</a></p>
-<ul>
-<li><a href="https://www.cnblogs.com/fengxiongZz/p/7707219.html" target="_blank" rel="noopener">使用Hexo+Github一步步搭建属于自己的博客（基础）</a></li>
-<li><a href="https://www.jianshu.com/p/189fd945f38f" target="_blank" rel="noopener">搭建个人博客-hexo+github详细完整步骤</a></li>
-<li><a href="http://www.cnblogs.com/liuxianan/p/build-blog-website-by-hexo-github.html" target="_blank" rel="noopener">使用hexo+github搭建免费个人博客详细教程</a></li>
-<li><a href="https://www.jianshu.com/p/f054333ac9e6" target="_blank" rel="noopener">hexo的next主题个性化教程:打造炫酷网站</a></li>
-</ul>
-<p><strong><em>PS：没想到第一次写个博客用了这么久，让某蛋久等了…以后这里应该也会写写这个某蛋的故事，希望将来不管谁看到的时候，都是满脸笑意</em></strong></p>
-
-          
+          <h1 id="写在前面的废话"><a href="#写在前面的废话" class="headerlink" title="写在前面的废话"></a>写在前面的废话</h1><p>很久以前就看到过许多漂亮的博客，尤其是在遇到技术问题百度一下的时候，总会点到一些技术大牛的个人博客里，看他们的解决方法和一些私人日志（偷笑）。每次看到漂亮的博客都觉的好羡慕，想着将来自己也搞这么个东西玩玩，于是就有了这个学来的“教程”。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/archives/f23eadd3.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
