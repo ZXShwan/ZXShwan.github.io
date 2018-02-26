@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="霄小小小丑">
 <meta property="og:description" content="写在前面的废话很久以前就看到过许多漂亮的博客，尤其是在遇到技术问题百度一下的时候，总会点到一些技术大牛的个人博客里，看他们的解决方法和一些私人日志（偷笑）。每次看到漂亮的博客都觉的好羡慕，想着将来自己也搞这么个东西玩玩，于是就有了这个学来的“教程”。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-14T04:27:40.209Z">
+<meta property="og:updated_time" content="2018-02-26T03:53:33.024Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用Hexo与GitHub搭建个人博客">
 <meta name="twitter:description" content="写在前面的废话很久以前就看到过许多漂亮的博客，尤其是在遇到技术问题百度一下的时候，总会点到一些技术大牛的个人博客里，看他们的解决方法和一些私人日志（偷笑）。每次看到漂亮的博客都觉的好羡慕，想着将来自己也搞这么个东西玩玩，于是就有了这个学来的“教程”。">
@@ -441,7 +441,7 @@
 <p>运行以下命令进行清理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure></p>
 <p>运行以下命令生成所需要的静态页面及文件（g 即 generate）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></p>
 <p>运行以下命令启动服务器（s 即 server）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></p>
-<p>然后打开浏览器，输入地址 <strong><a href="localhost:4000" target="_blank" rel="noopener">localhost:4000</a></strong> 即可看到效果</p>
+<p>然后打开浏览器，输入地址 <strong>localhost:4000</strong> 即可看到效果</p>
 <ul>
 <li>发表文章</li>
 </ul>
@@ -464,7 +464,7 @@
 <p>连续按三次回车，设置密码为空。<br>输入以下命令，复制里面的所有内容，再按 “Esc -&gt; :q” 回车，退出编辑界面。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .ssh/id_rsa.pub</span><br></pre></td></tr></table></figure></p>
 <p>在 GitHub 上点击右上角自己的头像 <strong><em>-&gt; Settings —&gt; SSH nd GPG keys —&gt; New SSH key</em></strong>，把刚刚复制的内容粘贴到 key 中，随便起个名字填入 <strong>title</strong> 并点击 <strong>Add SSH Key</strong>。</p>
 <h2 id="开始部署"><a href="#开始部署" class="headerlink" title="开始部署"></a>开始部署</h2><p>首先安装 <a href="https://github.com/hexojs/hexo-deployer-git" target="_blank" rel="noopener">hexo-deployer-git</a>。在终端利用“cd”命令进入刚刚建立好的 blog 路径下，输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p>
-<p>然后打开 blog 文件夹下的 _config.yml 文件配置 deploy：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: github    ------&gt; 直接填写 github</span><br><span class="line">  repository: https://github.com/rakkang/rakkang.github.io.git   -----&gt; Github 的仓库地址</span><br><span class="line">  brach: master</span><br></pre></td></tr></table></figure></p>
+<p>然后打开 blog 文件夹下的 _config.yml 文件配置 deploy：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git    ------&gt; 直接填写 git</span><br><span class="line">  repository: https://github.com/yourname/yourname.github.io.git   -----&gt; Github 的仓库地址</span><br><span class="line">  brach: master</span><br></pre></td></tr></table></figure></p>
 <p>保存退出，在终端输入（d 即 deploy）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p>
 <p>至此，成功之后便可以通过访问 <strong>“username.github.io”</strong> 来查看你的博客啦！</p>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p>本“教程”仅为博客搭建入门教程，也只是记录下自己第一次搭建博客的过程，大家可以根据自己的需求做进一步改进，如更换主题、删除文章等，详情参考<a href="https://hexo.io/docs/" target="_blank" rel="noopener">官方文档</a></p>
