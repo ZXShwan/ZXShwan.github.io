@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据库," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="需求分析阶段1. 数据库设计简介1.1 什么是数据库设计？简单来说，数据库设计就是根据业务系统的具体需要，结合我们所选用的DBMS（数据库管理系统），为这个业务体系构造出最优的数据存储模型，并建立好数据库中的表结构以及表与表之间的关联关系的过程，使其能够有效的对应用系统中的数据进行存储，并可以高效的对已经存储的数据进行访问。">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于数据库设计知识的复习">
+<meta property="og:url" content="https://zxshwan.github.io/archives/c2a53119.html">
+<meta property="og:site_name" content="霄小小小丑">
+<meta property="og:description" content="需求分析阶段1. 数据库设计简介1.1 什么是数据库设计？简单来说，数据库设计就是根据业务系统的具体需要，结合我们所选用的DBMS（数据库管理系统），为这个业务体系构造出最优的数据存储模型，并建立好数据库中的表结构以及表与表之间的关联关系的过程，使其能够有效的对应用系统中的数据进行存储，并可以高效的对已经存储的数据进行访问。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-10T02:43:45.430Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于数据库设计知识的复习">
+<meta name="twitter:description" content="需求分析阶段1. 数据库设计简介1.1 什么是数据库设计？简单来说，数据库设计就是根据业务系统的具体需要，结合我们所选用的DBMS（数据库管理系统），为这个业务体系构造出最优的数据存储模型，并建立好数据库中的表结构以及表与表之间的关联关系的过程，使其能够有效的对应用系统中的数据进行存储，并可以高效的对已经存储的数据进行访问。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zxshwan.github.io/archives/c2a53119.html"/>
+
+
+
+
+
+  <title>关于数据库设计知识的复习 | 霄小小小丑</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">霄小小小丑</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Xiao 的个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zxshwan.github.io/archives/c2a53119.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xiao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="霄小小小丑">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于数据库设计知识的复习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-09T17:35:42-05:00">
+                2018-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习与总结/" itemprop="url" rel="index">
+                    <span itemprop="name">学习与总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/archives/c2a53119.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="archives/c2a53119.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5,599
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  20
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="需求分析阶段"><a href="#需求分析阶段" class="headerlink" title="需求分析阶段"></a>需求分析阶段</h1><h2 id="1-数据库设计简介"><a href="#1-数据库设计简介" class="headerlink" title="1. 数据库设计简介"></a>1. 数据库设计简介</h2><h3 id="1-1-什么是数据库设计？"><a href="#1-1-什么是数据库设计？" class="headerlink" title="1.1 什么是数据库设计？"></a>1.1 什么是数据库设计？</h3><p>简单来说，数据库设计就是根据业务系统的具体需要，结合我们所选用的DBMS（数据库管理系统），为这个业务体系构造出<strong>最优的</strong>数据存储模型，并建立好数据库中的表结构以及表与表之间的关联关系的过程，使其能够<strong>有效的</strong>对应用系统中的数据进行存储，并可以<strong>高效的</strong>对已经存储的数据进行访问。</p>
+<a id="more"></a>
+<h3 id="1-2-为什么要进行数据库的设计？"><a href="#1-2-为什么要进行数据库的设计？" class="headerlink" title="1.2 为什么要进行数据库的设计？"></a>1.2 为什么要进行数据库的设计？</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">优良的设计</th>
+<th style="text-align:center">糟糕的设计</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">减少数据冗余</td>
+<td style="text-align:center">存在大量的数据冗余</td>
+</tr>
+<tr>
+<td style="text-align:center">避免数据维护异常</td>
+<td style="text-align:center">存在数据插入、更新、删除异常</td>
+</tr>
+<tr>
+<td style="text-align:center">节约存储空间</td>
+<td style="text-align:center">浪费大量存储空间</td>
+</tr>
+<tr>
+<td style="text-align:center">高效的访问</td>
+<td style="text-align:center">访问数据低效</td>
+</tr>
+</tbody>
+</table>
+<p>在数据库最初使用是，由于数据量较小，可能看不出数良好的数据库设计的必要。但当业务越来越多，越来越复杂，数据量不断增长时，糟糕的数据库设计便阻碍了公司正常业务的进行，而且对开发人员会造成很大的影响。所以，在系统设计开始就对数据库进行良好的设计是非常有必要的。</p>
+<h2 id="2-数据库设计的步骤"><a href="#2-数据库设计的步骤" class="headerlink" title="2. 数据库设计的步骤"></a>2. 数据库设计的步骤</h2><p>数据库设计的步骤主要分为以下四个阶段：</p>
+<h3 id="2-1-需求分析"><a href="#2-1-需求分析" class="headerlink" title="2.1 需求分析"></a>2.1 需求分析</h3><p>数据库设计的需求分析与应用程序的需求分析不同，这里它的主要作用点是：</p>
+<ul>
+<li>数据是什么</li>
+<li>数据有哪些属性</li>
+<li>数据和属性各自的特点有哪些</li>
+</ul>
+<h3 id="2-2-逻辑设计"><a href="#2-2-逻辑设计" class="headerlink" title="2.2 逻辑设计"></a>2.2 逻辑设计</h3><p>主要使用ER图对数据库进行逻辑建模</p>
+<h3 id="2-3-物理设计"><a href="#2-3-物理设计" class="headerlink" title="2.3 物理设计"></a>2.3 物理设计</h3><p>根据数据库自身的特点把逻辑设计转化为物理设计，即用不同的DBMS建立相应的数据库和数据表等。</p>
+<h3 id="2-4-维护优化"><a href="#2-4-维护优化" class="headerlink" title="2.4 维护优化"></a>2.4 维护优化</h3><p>为保持数据库高效而稳定，在本阶段中主要做的工作如下：</p>
+<ul>
+<li>根据新的需求进行建表</li>
+<li>索引拆分</li>
+<li>大表拆分（水平拆分和垂直拆分）</li>
+</ul>
+<h2 id="3-需求分析的重要性"><a href="#3-需求分析的重要性" class="headerlink" title="3. 需求分析的重要性"></a>3. 需求分析的重要性</h2><h3 id="3-1-为什么要进行需求分析"><a href="#3-1-为什么要进行需求分析" class="headerlink" title="3.1 为什么要进行需求分析"></a>3.1 为什么要进行需求分析</h3><ul>
+<li>了解系统中所要存储的数据</li>
+<li>了解数据的存储特点</li>
+<li>了解数据的生命周期</li>
+</ul>
+<p>通过进行需求分析，对于我们构建表的过程中具有非常重要的作用，更影响到了后期开发的难度。</p>
+<h3 id="3-2-要搞清楚的问题"><a href="#3-2-要搞清楚的问题" class="headerlink" title="3.2 要搞清楚的问题"></a>3.2 要搞清楚的问题</h3><ul>
+<li>实体和实体之间的关系（一对一，一对多，多对多）</li>
+<li>实体包含的属性有什么</li>
+<li>哪些属性或属性的组合可以唯一标识一个实体</li>
+</ul>
+<h1 id="逻辑设计阶段"><a href="#逻辑设计阶段" class="headerlink" title="逻辑设计阶段"></a>逻辑设计阶段</h1><h2 id="1-逻辑设计简介"><a href="#1-逻辑设计简介" class="headerlink" title="1. 逻辑设计简介"></a>1. 逻辑设计简介</h2><h3 id="1-1-逻辑设计用来做什么"><a href="#1-1-逻辑设计用来做什么" class="headerlink" title="1.1 逻辑设计用来做什么"></a>1.1 逻辑设计用来做什么</h3><ul>
+<li>见需求转化为数据库的逻辑模型</li>
+<li>通过ER图的形式对逻辑模型进行展示</li>
+<li>与将来选用的具体DBMS系统无关</li>
+</ul>
+<h3 id="1-2-名词解释"><a href="#1-2-名词解释" class="headerlink" title="1.2 名词解释"></a>1.2 名词解释</h3><ul>
+<li>关系：一个关心对应通常诉说的一张表</li>
+<li>元组：表中的一行即为一个元组</li>
+<li>属性：表中的一列即为一个属性；每个属性都有一个名称，成为属性名</li>
+<li>候选码：表中的某个属性组，它可以唯一确定一个元组</li>
+<li>主码：一个关系有多个候选码，选定某一个作为主码，也称主键</li>
+<li>域：属性的取值范围</li>
+<li>分量：元组中的一个属性值</li>
+</ul>
+<h3 id="1-3-ER图例说明"><a href="#1-3-ER图例说明" class="headerlink" title="1.3 ER图例说明"></a>1.3 ER图例说明</h3><ul>
+<li>矩形：表示实体集，矩形内部写实体集名字</li>
+<li>菱形：表示联系集<ul>
+<li>椭圆：表示实体的属性（属性名加下划线表示主键）</li>
+</ul>
+</li>
+<li>线段：将属性连接到实体集，或将联系集连接到实体集</li>
+</ul>
+<h2 id="2-设计范式概要"><a href="#2-设计范式概要" class="headerlink" title="2. 设计范式概要"></a>2. 设计范式概要</h2><p>在进行数据库设计的时候，我们会碰到建立表的问题，例如：</p>
+<p>用户信息和购物车信息  =&gt;  一张表</p>
+<p><strong>或</strong></p>
+<p>用户信息  =&gt;  一张表</p>
+<p>购物车信息  =&gt;  一张表</p>
+<p>到底应该怎样设计比较好呢？这里就引出了数据库设计范式的问题。</p>
+<h3 id="2-1-什么是数据库设计范式"><a href="#2-1-什么是数据库设计范式" class="headerlink" title="2.1 什么是数据库设计范式"></a>2.1 什么是数据库设计范式</h3><p>常见的数据库设计范式包括：</p>
+<p>第一范式，第二范式，第三范式以及BC范式</p>
+<p>还有第四范式以及第五范式，不过我们重点是在前三个范式上，也是大多数数据库设计索要遵循的范式。</p>
+<h3 id="2-2-数据操作异常以及数据冗余"><a href="#2-2-数据操作异常以及数据冗余" class="headerlink" title="2.2 数据操作异常以及数据冗余"></a>2.2 数据操作异常以及数据冗余</h3><p>范式通常就是为了解决数据操作异常以及数据冗余而存在的，数据操作异常主要指以下三类：</p>
+<ul>
+<li>插入异常：如果某实体随着另一个实体的存在而存在，即缺少某个实体时无法表示这个实体，那么这个表就存在插入异常</li>
+<li>更新异常：如果更改表所对应的某个实体实例的单独属性时，需要将多行更新，那么这个表就存在更新异常</li>
+<li>删除异常：如果删除表的某一行来反应某实体实例失效时导致另一个不同实体实例信息丢失，那么这个表就存在删除异常</li>
+</ul>
+<p><strong><em>注：一般一个表存在插入异常的同时，必定存在着更新异常和删除异常！</em></strong></p>
+<p>数据冗余是指相同的数据在多个地方存在，或者说表中的某个列可以由其他列计算得到。数据冗余会产生许多无用的不必要的数据，给数据库表带来更大的压力，不利于以后的开发和维护。<strong>一般</strong>设计时应避免出现数据冗余。</p>
+<h3 id="2-3-第一范式（1NF）"><a href="#2-3-第一范式（1NF）" class="headerlink" title="2.3 第一范式（1NF）"></a>2.3 第一范式（1NF）</h3><p>定义：数据库表中的所有字段都是单一属性，不可再分的。这个单一属性是由基本的数据类型所构成的，如整数，浮点数，字符串等。<strong><em>换句话说，第一范式要求数据库中的表都是二维表。</em></strong></p>
+<h3 id="2-4-第二范式（2NF）"><a href="#2-4-第二范式（2NF）" class="headerlink" title="2.4 第二范式（2NF）"></a>2.4 第二范式（2NF）</h3><p>定义：数据库中的表中不存在非关键字段对任一候选关键字段的部分函数依赖。部分函数依赖是指存在着组合关键字中的某一关键字决定非关键字的情况。<strong><em>换句话说，所有单关键字段的表都符合第二范式。</em></strong></p>
+<p>举个栗子：</p>
+<table>
+<thead>
+<tr>
+<th>商品名称</th>
+<th>供应商名称</th>
+<th>价格</th>
+<th>描述</th>
+<th>重量</th>
+<th>供应商电话</th>
+<th>有效期</th>
+<th>分类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可乐</td>
+<td>饮料一厂</td>
+<td>3.00</td>
+<td></td>
+<td>500ml</td>
+<td>1234567</td>
+<td>2019.01</td>
+<td>饮料</td>
+</tr>
+<tr>
+<td>可乐</td>
+<td>饮料二厂</td>
+<td>3.00</td>
+<td></td>
+<td>500ml</td>
+<td>7654321</td>
+<td>2019.01</td>
+<td>饮料</td>
+</tr>
+</tbody>
+</table>
+<p>上表中由于供应商和商品之间是多对多的关系，所以只有使用商品名称和供应商名称组合才可以唯一标识出一件商品，换句话说，主键应为：（商品名称+供应商名称）。这里，表中存在着以下部分函数依赖：</p>
+<p>（商品名称）决定（价格，描述，重量，有效期）</p>
+<p>（供应商名称）决定（供应商电话）</p>
+<p>这违反了第二范式的规则，所以存在着数据操作异常以及数据冗余。一个正确的修改例子如下：（将原来的一张表拆分）</p>
+<table>
+<thead>
+<tr>
+<th>商品ID</th>
+<th>商品名称</th>
+<th>价格</th>
+<th>描述</th>
+<th>重量</th>
+<th>有效期</th>
+<th>分类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>可乐</td>
+<td>3.00</td>
+<td></td>
+<td>500ml</td>
+<td>2019.01</td>
+<td>饮料</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>供应商ID</th>
+<th>供应商名称</th>
+<th>供应商电话</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>饮料一厂</td>
+<td>1234567</td>
+</tr>
+<tr>
+<td>2</td>
+<td>饮料二厂</td>
+<td>7654321</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-5-第三范式（3NF）"><a href="#2-5-第三范式（3NF）" class="headerlink" title="2.5 第三范式（3NF）"></a>2.5 第三范式（3NF）</h3><p>定义：第三范式是在第二范式的基础之上定义的，如果数据表中不存在非关键字段对任意候选关键字段的传递函数依赖，则符合第三范式。举个栗子：</p>
+<table>
+<thead>
+<tr>
+<th>商品名称</th>
+<th>价格</th>
+<th>商品描述</th>
+<th>重量</th>
+<th>有效期</th>
+<th>分类</th>
+<th>分类描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可乐</td>
+<td>3.00</td>
+<td></td>
+<td>500ml</td>
+<td>2019.01</td>
+<td>酒水饮料</td>
+<td>碳酸饮料</td>
+</tr>
+<tr>
+<td>苹果</td>
+<td>5.00</td>
+<td></td>
+<td>500g</td>
+<td></td>
+<td>生鲜食品</td>
+<td>水果</td>
+</tr>
+</tbody>
+</table>
+<p>上述表中存在着以下传递函数依赖关系：</p>
+<p>（商品名称）决定（分类）决定（分类描述）</p>
+<p>也就是说，存在非关键字段“分类描述”对关键字段“商品名称”的传递函数依赖。</p>
+<p>这里，（分类，分类描述）对于每一个商品都会进行记录，存在着数据冗余，同时还存在着数据操作异常。一个正确的修改例子如下：（拆分表）</p>
+<table>
+<thead>
+<tr>
+<th>商品ID</th>
+<th>商品名称</th>
+<th>价格</th>
+<th>商品描述</th>
+<th>重量</th>
+<th>有效期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>可乐</td>
+<td>3.00</td>
+<td></td>
+<td>500ml</td>
+<td>2019.01</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>分类ID</th>
+<th>分类</th>
+<th>分类描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>酒水饮料</td>
+<td>碳酸饮料</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-6-BC范式（BCNF）"><a href="#2-6-BC范式（BCNF）" class="headerlink" title="2.6 BC范式（BCNF）"></a>2.6 BC范式（BCNF）</h3><p>定义：在第三范式的基础之上，数据库表中如果不存在任何字段对任一候选关键字段的传递函数依赖则符合BC范式。<strong><em>也就是说，如果是复合关键字，则复合关键字之间也不能存在函数依赖关系。</em></strong></p>
+<p>举个栗子：</p>
+<table>
+<thead>
+<tr>
+<th>供应商</th>
+<th>商品ID</th>
+<th>供应商联系人</th>
+<th>商品数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>饮料一厂</td>
+<td>1</td>
+<td>张三</td>
+<td>10</td>
+</tr>
+<tr>
+<td>饮料二厂</td>
+<td>2</td>
+<td>李四</td>
+<td>20</td>
+</tr>
+<tr>
+<td>饮料二厂</td>
+<td>1</td>
+<td>王五</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+<p>这里我们假定，供应商联系人只能受雇于一家供应商，没加供应商可以供应多个商品。则存在着如下决定关系：</p>
+<p>（供应商，商品ID）决定（联系人，商品数量）</p>
+<p>（联系人，商品ID）决定（供应商，商品数量）</p>
+<p>而由于下列关系的存在，则不符合BC范式的要求：</p>
+<p>（供应商）决定（供应商联系人）</p>
+<p>（供应商联系人）决定（供应商）</p>
+<p>一种正确的修改方式如下：（拆分）</p>
+<table>
+<thead>
+<tr>
+<th>供应商</th>
+<th>商品ID</th>
+<th>商品数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>饮料一厂</td>
+<td>1</td>
+<td>10</td>
+</tr>
+<tr>
+<td>饮料一厂</td>
+<td>2</td>
+<td>20</td>
+</tr>
+<tr>
+<td>饮料二厂</td>
+<td>1</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>供应商</th>
+<th>供应商联系人</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>饮料一厂</td>
+<td>张三</td>
+</tr>
+<tr>
+<td>饮料一厂</td>
+<td>李四</td>
+</tr>
+<tr>
+<td>饮料二厂</td>
+<td>王五</td>
+</tr>
+</tbody>
+</table>
+<h1 id="物理设计阶段"><a href="#物理设计阶段" class="headerlink" title="物理设计阶段"></a>物理设计阶段</h1><h2 id="1-物理设计简介"><a href="#1-物理设计简介" class="headerlink" title="1. 物理设计简介"></a>1. 物理设计简介</h2><p>物理设计就是将逻辑设计转化为真正使用DBMS创建和管理数据库数据表的过程，在这个过程中同样存在着许多设计上的选择和问题。那么物理设计要做什么？</p>
+<ul>
+<li>选择合适的数据库管理系统</li>
+<li>定义数据库、表以及字段的命名规范</li>
+<li>根据所选的DBMS系统选择合适的字段类型</li>
+<li>反范式化的设计</li>
+</ul>
+<h2 id="2-选择合适的数据库管理系统（DBMS）"><a href="#2-选择合适的数据库管理系统（DBMS）" class="headerlink" title="2. 选择合适的数据库管理系统（DBMS）"></a>2. 选择合适的数据库管理系统（DBMS）</h2><p>这里暂时不探讨NoSql数据库，只对传统关系型数据库进行一点简单的区分选择。以下是常见的关系型数据库</p>
+<ul>
+<li>Oracle：属于商业数据库，在使用时不得不考虑版权问题。在业界中口碑较好，性能高，比较适合大型事务操作，因为在Oracle数据库中事务操作成本较低。可以运行在Windows、类Unix操作系统上，使用Java、PHP等语言较为适合</li>
+<li>SQLServer：属于商业数据库，版权问题需考虑。事务操作成本较高，比较适合小型事务操作。由于是微软开发的，它只支持运行在Windows操作系统，并且与 .Net 语言契合度较高。</li>
+<li>MySQL：开源数据库，只要符合社区协议，使用时不用支付任何费用。像SQLServer一样，事务操作成本较高，也是比较适合小型事务操作。可运行在Windows、类Unix操作系统上，同样适合Java、PHP等编程语言。</li>
+</ul>
+<p>总体来说，Oracle、SQLServer数据库适合于大型企业级项目，而MySQL数据库更适合于互联网项目。</p>
+<h2 id="3-MySQL-常用的存储引擎"><a href="#3-MySQL-常用的存储引擎" class="headerlink" title="3. MySQL 常用的存储引擎"></a>3. MySQL 常用的存储引擎</h2><table>
+<thead>
+<tr>
+<th>存储引擎</th>
+<th>事务</th>
+<th>颗粒度</th>
+<th>主要应用</th>
+<th>忌用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MyISAM</td>
+<td>不支持</td>
+<td>支持并发插入的表级锁</td>
+<td>SELECT，INSERT</td>
+<td>读写操作频繁</td>
+</tr>
+<tr>
+<td>MRG_MYISAM</td>
+<td>不支持</td>
+<td>支持并发插入的表级锁</td>
+<td>分段归档，数据仓库</td>
+<td>全局查找过多的场景</td>
+</tr>
+<tr>
+<td>Innodb</td>
+<td>支持</td>
+<td>支持MVCC的行级锁</td>
+<td>事务处理</td>
+<td>无</td>
+</tr>
+<tr>
+<td>Archive</td>
+<td>不支持</td>
+<td>行级锁</td>
+<td>日志记录，只支持INSERT，SELECT</td>
+<td>需要随机读取，更新，删除</td>
+</tr>
+<tr>
+<td>Ndb cluster</td>
+<td>支持</td>
+<td>行级锁</td>
+<td>高可用性</td>
+<td>大部分应用</td>
+</tr>
+</tbody>
+</table>
+<p>目前，我们常用的是 Innodb 引擎。</p>
+<h2 id="4-表及字段的命名规则"><a href="#4-表及字段的命名规则" class="headerlink" title="4. 表及字段的命名规则"></a>4. 表及字段的命名规则</h2><p>所有对象命名应该遵循以下原则：</p>
+<ol>
+<li>可读性原则：使用大写和小写来格式化的库对象名字，以获得良好的可读性。例如：使用UserAddress而不是useraddress来提高可读性（注意，有些DBMS系统对表名的大小写是敏感的）</li>
+<li>表意性原则：对象的名字应该能够描述它所标识的对象。例如：对于表，表的名称应该能够体现表中存储的数据内容；对于存储过程，存储过程名称应该能够体现存储过程的功能。</li>
+<li>长名原则：尽可能少使用或者不使用缩写，适用于数据库（DATABASE）名之外的任一对象</li>
+</ol>
+<h2 id="5-字段类型的选择原则"><a href="#5-字段类型的选择原则" class="headerlink" title="5. 字段类型的选择原则"></a>5. 字段类型的选择原则</h2><p>列的数据类型一方面影响数据存储空间的开销，另一方面也会影响到数据查询性能。当一个列可以选择多种数据类型时，应该优先考虑数字类型，其次是日期或二进制类型，最后是字符类型。对于相同级别的数据类型，应该优先选择占用空间小的数据类型。</p>
+<p>以下是 MySQL 中每种数据类型占用空间大小的对比：</p>
+<table>
+<thead>
+<tr>
+<th>列类型</th>
+<th>存储空间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TINYINT</td>
+<td>1 字节</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>2 字节</td>
+</tr>
+<tr>
+<td>MEDIUMINT</td>
+<td>3 字节</td>
+</tr>
+<tr>
+<td>INT</td>
+<td>4 字节</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>8 字节</td>
+</tr>
+<tr>
+<td>DATE</td>
+<td>3 字节</td>
+</tr>
+<tr>
+<td>DATETIME</td>
+<td>8 字节</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>4 字节</td>
+</tr>
+<tr>
+<td>CHAR（M）</td>
+<td>M 字节，1 &lt;= M &lt;= 255</td>
+</tr>
+<tr>
+<td>VARCHAR（M）</td>
+<td>L + 1 字节，L &lt;= M 且 1 &lt;= M &lt;= 255</td>
+</tr>
+</tbody>
+</table>
+<p>以上选择原则主要是从下面两个角度考虑的：</p>
+<ol>
+<li>在对数据进行比较（查询条件，JOIN条件以及排序）操作时，<strong>同样的数据，字符处理往往比数字处理慢</strong>。</li>
+<li>在数据库中，数据处理以页为单位，<strong>列的长度越小，每页存储量越多，性能也就越好</strong>。</li>
+</ol>
+<h2 id="6-字段类型的具体选择"><a href="#6-字段类型的具体选择" class="headerlink" title="6. 字段类型的具体选择"></a>6. 字段类型的具体选择</h2><h3 id="6-1-char-与-varchar"><a href="#6-1-char-与-varchar" class="headerlink" title="6.1 char 与 varchar"></a>6.1 char 与 varchar</h3><ul>
+<li>如果列中要存储的数据长度差不多是一致的，则考虑用 char，否则考虑用 varchar。</li>
+<li>如果列中的最大数据长度小于 50 Byte， 则一般考虑用 char。（如果此列很少使用，出于节省空间和减少 I/O 的考虑，还是可以选择使用 varchar）</li>
+<li>一般不宜定义大于 50 Byte 的 char 类型列。</li>
+</ul>
+<h3 id="6-2-decimal-与-float"><a href="#6-2-decimal-与-float" class="headerlink" title="6.2 decimal 与 float"></a>6.2 decimal 与 float</h3><ul>
+<li>decimal 用于存储精确数据，而 float 只能用于存储非精确数据。</li>
+<li>由于 float 占用存储空间一般比 decimal 小，所以非精确数据优先选择 float 类型。</li>
+</ul>
+<h3 id="6-3-时间类型的存储"><a href="#6-3-时间类型的存储" class="headerlink" title="6.3 时间类型的存储"></a>6.3 时间类型的存储</h3><ul>
+<li><p>使用 INT 来存储时间字段（一般用于很少查询的情况）</p>
+<p>优点：字段长度比 DATETIME 小</p>
+<p>缺点：使用不方便，要进行函数转换才能获得具体表示的时间</p>
+<p>限制：只能存储到 2038-01-19 11:14:07，即 2^32 为 2147483648</p>
+</li>
+<li><p>根据需要存储的时间粒度来选择存储类型</p>
+<p>年，月，日，周，时，分，秒</p>
+</li>
+</ul>
+<h2 id="7-其他注意事项"><a href="#7-其他注意事项" class="headerlink" title="7. 其他注意事项"></a>7. 其他注意事项</h2><h3 id="7-1-如何选择主键"><a href="#7-1-如何选择主键" class="headerlink" title="7.1 如何选择主键"></a>7.1 如何选择主键</h3><ul>
+<li><p>区分业务主键和数据库主键</p>
+<p>业务主键用于标识业务数据，进行表与表之间的关联；</p>
+<p>数据库主键为了优化数据存储（Innodb 会生成6个字节的隐含主键）</p>
+</li>
+<li><p>根据数据库的类型，考虑主键是否要顺序增长</p>
+<p>有些数据库是按主键的顺序逻辑存储的</p>
+</li>
+<li><p>主键的字段类型所占空间要尽可能的小</p>
+<p>对于使用聚集索引方式存储的表，每个索引后都会附加主键信息。</p>
+</li>
+</ul>
+<h3 id="7-2-避免使用外键约束"><a href="#7-2-避免使用外键约束" class="headerlink" title="7.2 避免使用外键约束"></a>7.2 避免使用外键约束</h3><ul>
+<li>降低数据导入的效率</li>
+<li>增加维护成本</li>
+<li>虽然不建议使用外键约束，但是相关联的列上一定要建立索引</li>
+</ul>
+<h3 id="7-3-避免使用触发器"><a href="#7-3-避免使用触发器" class="headerlink" title="7.3 避免使用触发器"></a>7.3 避免使用触发器</h3><ul>
+<li>降低数据导入的效率</li>
+<li>可能会出现意想不到的数据异常</li>
+<li>使业务逻辑变得更加复杂</li>
+</ul>
+<h3 id="7-4-关于预留字段"><a href="#7-4-关于预留字段" class="headerlink" title="7.4 关于预留字段"></a>7.4 关于预留字段</h3><ul>
+<li>无法准确的知道预留字段的类型</li>
+<li>无法准确的知道预留字段中所存储的内容</li>
+<li>后期维护预留字段所需要的成本，和增加一个字段所需要的成本是相同的</li>
+<li><strong>严禁使用预留字段</strong></li>
+</ul>
+<h2 id="8-反范式化表设计"><a href="#8-反范式化表设计" class="headerlink" title="8. 反范式化表设计"></a>8. 反范式化表设计</h2><p>什么是反范式化？反范式化是针对范式化而言的，它就是为了<strong>性能</strong>和<strong>读取效率</strong>的考虑而适当的对第三范式的要求进行违反，而允许存在少量的数据冗余。<strong><em>换句话说，反范式化就是使用空间来换取时间。</em></strong></p>
+<p>举个栗子：</p>
+<p>以下是一个符合范式化的设计数据库表结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用户表：	用户ID	姓名	电话	地址	邮编</span><br><span class="line">订单表：	订单ID	用户ID	下单时间	支付类型	订单状态</span><br><span class="line">订单商品表：	订单ID	商品ID	商品数量	商品价格</span><br><span class="line">商品表：	商品ID	名称	描述	过期时间</span><br></pre></td></tr></table></figure>
+<p>对于上述设计，查询订单详情语句如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT b.用户名, b.电话, b.地址, a.订单ID, SUM(c.商品价格*c.商品数量) as 订单价格, c.商品价格 \</span><br><span class="line">  FROM &quot;订单表&quot; a \</span><br><span class="line">  JOIN &quot;用户表&quot; b ON a.用户ID = b.用户ID \</span><br><span class="line">  JOIN &quot;订单商品表&quot; c ON c.订单ID = b.订单ID \</span><br><span class="line">  JOIN &quot;商品表&quot; d on d.商品ID = c.商品ID</span><br></pre></td></tr></table></figure>
+<p>而对于一个反范式化设计如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用户表：	用户ID	姓名	电话	地址	邮编</span><br><span class="line">订单表：	订单ID	用户ID	下单时间	支付类型	订单状态	订单价格	姓名	地址	电话</span><br><span class="line">订单商品表：	订单ID	商品ID	商品数量	商品价格	商品名称	过期时间</span><br><span class="line">商品表：	商品ID	名称	描述	过期时间</span><br></pre></td></tr></table></figure>
+<p>此时，当我们想要查询订单详情时，查询语句将会变得非常简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT a.用户名, a.电话, a.地址, a.订单ID, a.订单价格 FROM &quot;订单表&quot; a</span><br></pre></td></tr></table></figure>
+<p>由此可见，当我们读写比例比较大时，即读取数据次数比起写入次数总是要多很多时，使用反范式化构建表还是非常有必要的，这样可以加快我们的查询效率。</p>
+<p>总结起来，反范式化的原因主要有以下几点：</p>
+<ul>
+<li>减少表的关联数量</li>
+<li>增加数据的读取效率</li>
+</ul>
+<p><strong><em>注意：反范式化一定要适度，不然可能造成数据的操作异常，得不偿失。</em></strong></p>
+<h1 id="维护优化阶段"><a href="#维护优化阶段" class="headerlink" title="维护优化阶段"></a>维护优化阶段</h1><p>随着业务的增长，需求在不断的变化，此时对于数据库的维护和优化就显得尤为重要。在这个阶段中，我们主要做的事情有以下几方面：</p>
+<ol>
+<li>维护数据字典</li>
+<li>维护索引</li>
+<li>维护表结构</li>
+<li>在适当的时候对表进行水平拆分或垂直拆分</li>
+</ol>
+<h2 id="1-维护数据字典"><a href="#1-维护数据字典" class="headerlink" title="1. 维护数据字典"></a>1. 维护数据字典</h2><p>维护数据字典的方式主要有以下几种：</p>
+<ol>
+<li><p>使用第三方工具对数据字典进行维护</p>
+</li>
+<li><p>利用数据库本身的备注字段来维护数据字典</p>
+<p>如使用 MySQL 中的 <strong><em>COMMENT</em></strong> 关键字</p>
+</li>
+<li><p>导出数据字典</p>
+</li>
+</ol>
+<h2 id="2-维护索引"><a href="#2-维护索引" class="headerlink" title="2. 维护索引"></a>2. 维护索引</h2><p>索引的选择一般有以下几种：</p>
+<ol>
+<li>出现在 WHERE 从句，GROUP BY 从句或是 ORDER BY 从句中的列</li>
+<li>可选择性高的列要放在索引前面</li>
+<li>索引中不要包括太长的数据类型</li>
+</ol>
+<p><strong>注意：</strong></p>
+<ul>
+<li>索引并不是越多越好，过多的索引不但会降低写效率，而且会降低读的效率</li>
+<li>要定期维护索引碎片</li>
+<li>在 SQL 语句中，不要使用强制索引关键字</li>
+</ul>
+<h2 id="3-维护表结构"><a href="#3-维护表结构" class="headerlink" title="3. 维护表结构"></a>3. 维护表结构</h2><h3 id="3-1-常用的维护表结构的方法如下："><a href="#3-1-常用的维护表结构的方法如下：" class="headerlink" title="3.1 常用的维护表结构的方法如下："></a>3.1 常用的维护表结构的方法如下：</h3><ol>
+<li><p>使用在线变更表结构的工具</p>
+<p>在 MySQL 5.5 之前可以使用 pt-online-schema-change 来处理（此时涉及到之前提过的<strong>避免使用触发器</strong>，因为有的第三方工具在运行过程中，是会给数据库添加一些触发器来支持它们的操作，如果自己之前设置过触发器，很可能会损坏数据。）</p>
+<p>在 MySQL 5.6 之后，数据库本身支持了在线表结构的变更</p>
+</li>
+<li><p>同时对数据字典进行维护</p>
+<p>表结构更变的同时，一定要记得相应的更变数据字典</p>
+</li>
+<li><p>控制表的宽度和大小</p>
+</li>
+</ol>
+<h3 id="3-2-数据库中适合的操作"><a href="#3-2-数据库中适合的操作" class="headerlink" title="3.2 数据库中适合的操作"></a>3.2 数据库中适合的操作</h3><ol>
+<li><p>批量操作 vs 逐条操作</p>
+<p>显然，数据库适合批量操作，逐条操作适合在程序中完成</p>
+</li>
+<li><p>禁止使用 SELECT * 这样的语句</p>
+<p>会造成 IO 的浪费，同时，如果表结构变更，可能会对程序造成影响</p>
+</li>
+<li><p>控制使用用户自定义函数</p>
+<p>大量使用自定义函数会对索引产生不好的影响，自定义函数往往比较低效</p>
+</li>
+<li><p>不要使用数据库中的全文索引</p>
+<p>需要这种功能，最好使用搜索引擎代替全文索引，提升效率</p>
+</li>
+</ol>
+<h2 id="4-数据表的拆分"><a href="#4-数据表的拆分" class="headerlink" title="4. 数据表的拆分"></a>4. 数据表的拆分</h2><p>当数据表的结构变化，如表越来越宽，或表越来越长，我们应该分别使用垂直拆分和水平拆分来控制表的大小和宽度，以保证数据库执行的效率</p>
+<h3 id="4-1-表的垂直拆分"><a href="#4-1-表的垂直拆分" class="headerlink" title="4.1 表的垂直拆分"></a>4.1 表的垂直拆分</h3><p>通常以如下方法进行垂直拆分：</p>
+<ol>
+<li><p>经常一起查询的列放到一起</p>
+<p>这样不需要进行 JOIN 操作，减少了 I/O，同时还简化了查询语句</p>
+</li>
+<li><p>text, bolb 等大字段拆分出到附加表中</p>
+</li>
+</ol>
+<h3 id="4-2-表的水平拆分"><a href="#4-2-表的水平拆分" class="headerlink" title="4.2 表的水平拆分"></a>4.2 表的水平拆分</h3><p>一般采用 hash 的方法，将一张很大的表拆分为几个拥有相同属性的小表</p>
+<h3 id="4-3-两种拆分方式总结"><a href="#4-3-两种拆分方式总结" class="headerlink" title="4.3 两种拆分方式总结"></a>4.3 两种拆分方式总结</h3><p>垂直拆分解决了表的宽度问题，水平拆分解决了表的数据量大小问题。两种拆分都可以优化数据库表的 I/O，进而提升了数据库的效率。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.imooc.com/learn/117" target="_blank" rel="noopener">慕课网 - 数据库设计那些事</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>文章作者:</span><a href="/" title="访问 Xiao 的个人博客">Xiao</a></p>
+  <p><span>原始链接:</span><a href="/archives/c2a53119.html" title="关于数据库设计知识的复习">https://zxshwan.github.io/archives/c2a53119.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://zxshwan.github.io/archives/c2a53119.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/34ac48e.html" rel="next" title="Java中volatile关键字">
+                <i class="fa fa-chevron-left"></i> Java中volatile关键字
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.JPG"
+                alt="Xiao" />
+            
+              <p class="site-author-name" itemprop="name">Xiao</p>
+              <p class="site-description motion-element" itemprop="description">我有一只大蠢蛋我从来也不吃~</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZXShwan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/x-zhang" target="_blank" title="Linkedin">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/xiao.zhang.359126" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:default.xiao@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/xiao-hai-65-78/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-vk"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.weibo.com/3873207991/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#需求分析阶段"><span class="nav-number">1.</span> <span class="nav-text">需求分析阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-数据库设计简介"><span class="nav-number">1.1.</span> <span class="nav-text">1. 数据库设计简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-什么是数据库设计？"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 什么是数据库设计？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-为什么要进行数据库的设计？"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 为什么要进行数据库的设计？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据库设计的步骤"><span class="nav-number">1.2.</span> <span class="nav-text">2. 数据库设计的步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-需求分析"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 需求分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-逻辑设计"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 逻辑设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-物理设计"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 物理设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-维护优化"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4 维护优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-需求分析的重要性"><span class="nav-number">1.3.</span> <span class="nav-text">3. 需求分析的重要性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-为什么要进行需求分析"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 为什么要进行需求分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-要搞清楚的问题"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 要搞清楚的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#逻辑设计阶段"><span class="nav-number">2.</span> <span class="nav-text">逻辑设计阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-逻辑设计简介"><span class="nav-number">2.1.</span> <span class="nav-text">1. 逻辑设计简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-逻辑设计用来做什么"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.1 逻辑设计用来做什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-名词解释"><span class="nav-number">2.1.2.</span> <span class="nav-text">1.2 名词解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-ER图例说明"><span class="nav-number">2.1.3.</span> <span class="nav-text">1.3 ER图例说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-设计范式概要"><span class="nav-number">2.2.</span> <span class="nav-text">2. 设计范式概要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-什么是数据库设计范式"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.1 什么是数据库设计范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-数据操作异常以及数据冗余"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2 数据操作异常以及数据冗余</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-第一范式（1NF）"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.3 第一范式（1NF）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-第二范式（2NF）"><span class="nav-number">2.2.4.</span> <span class="nav-text">2.4 第二范式（2NF）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-第三范式（3NF）"><span class="nav-number">2.2.5.</span> <span class="nav-text">2.5 第三范式（3NF）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-BC范式（BCNF）"><span class="nav-number">2.2.6.</span> <span class="nav-text">2.6 BC范式（BCNF）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#物理设计阶段"><span class="nav-number">3.</span> <span class="nav-text">物理设计阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-物理设计简介"><span class="nav-number">3.1.</span> <span class="nav-text">1. 物理设计简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-选择合适的数据库管理系统（DBMS）"><span class="nav-number">3.2.</span> <span class="nav-text">2. 选择合适的数据库管理系统（DBMS）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-MySQL-常用的存储引擎"><span class="nav-number">3.3.</span> <span class="nav-text">3. MySQL 常用的存储引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-表及字段的命名规则"><span class="nav-number">3.4.</span> <span class="nav-text">4. 表及字段的命名规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-字段类型的选择原则"><span class="nav-number">3.5.</span> <span class="nav-text">5. 字段类型的选择原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-字段类型的具体选择"><span class="nav-number">3.6.</span> <span class="nav-text">6. 字段类型的具体选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-char-与-varchar"><span class="nav-number">3.6.1.</span> <span class="nav-text">6.1 char 与 varchar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-decimal-与-float"><span class="nav-number">3.6.2.</span> <span class="nav-text">6.2 decimal 与 float</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-时间类型的存储"><span class="nav-number">3.6.3.</span> <span class="nav-text">6.3 时间类型的存储</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-其他注意事项"><span class="nav-number">3.7.</span> <span class="nav-text">7. 其他注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-如何选择主键"><span class="nav-number">3.7.1.</span> <span class="nav-text">7.1 如何选择主键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-避免使用外键约束"><span class="nav-number">3.7.2.</span> <span class="nav-text">7.2 避免使用外键约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-避免使用触发器"><span class="nav-number">3.7.3.</span> <span class="nav-text">7.3 避免使用触发器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-关于预留字段"><span class="nav-number">3.7.4.</span> <span class="nav-text">7.4 关于预留字段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-反范式化表设计"><span class="nav-number">3.8.</span> <span class="nav-text">8. 反范式化表设计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#维护优化阶段"><span class="nav-number">4.</span> <span class="nav-text">维护优化阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-维护数据字典"><span class="nav-number">4.1.</span> <span class="nav-text">1. 维护数据字典</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-维护索引"><span class="nav-number">4.2.</span> <span class="nav-text">2. 维护索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-维护表结构"><span class="nav-number">4.3.</span> <span class="nav-text">3. 维护表结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-常用的维护表结构的方法如下："><span class="nav-number">4.3.1.</span> <span class="nav-text">3.1 常用的维护表结构的方法如下：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-数据库中适合的操作"><span class="nav-number">4.3.2.</span> <span class="nav-text">3.2 数据库中适合的操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-数据表的拆分"><span class="nav-number">4.4.</span> <span class="nav-text">4. 数据表的拆分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-表的垂直拆分"><span class="nav-number">4.4.1.</span> <span class="nav-text">4.1 表的垂直拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-表的水平拆分"><span class="nav-number">4.4.2.</span> <span class="nav-text">4.2 表的水平拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-两种拆分方式总结"><span class="nav-number">4.4.3.</span> <span class="nav-text">4.3 两种拆分方式总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!--
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">9.8k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://Xiao.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://zxshwan.github.io/archives/c2a53119.html';
+          this.page.identifier = 'archives/c2a53119.html';
+          this.page.title = '关于数据库设计知识的复习';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://Xiao.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
